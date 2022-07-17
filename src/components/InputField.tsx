@@ -1,19 +1,37 @@
-import React from 'react'
-import './inputField.css'
+import React, { useRef } from "react";
+import "./inputField.css";
 
 interface Props {
-    todo: string;
-    setTodo: React.Dispatch<React.SetStateAction<string>>;
+  todo: string;
+  setTodo: React.Dispatch<React.SetStateAction<string>>;
+  handleAdd: (evt: React.FormEvent) => void;
 }
 
-// const InputField = ({ todo, setTodo }: Props) => {
-const InputField: React.FC<Props> = ({ todo, setTodo }) => {
+// const InputField = ({ todo, setTodo, handleAdd }: Props) => {
+const InputField: React.FC<Props> = ({ todo, setTodo, handleAdd }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   return (
-    <form action="" className="input">
-        <input type="input" value={todo} onChange={(evt) => setTodo(evt.target.value)} placeholder='Enter a task' className='input__box' />
-        <button className="input_submit" type='submit'>Add</button>
+    <form
+      className="input"
+      onSubmit={(e) => {
+        handleAdd(e);
+        inputRef.current?.blur();
+      }}
+    >
+      <input
+        ref={inputRef}
+        type="input"
+        value={todo}
+        onChange={(evt) => setTodo(evt.target.value)}
+        placeholder="Enter a task"
+        className="input__box"
+      />
+      <button className="input_submit" type="submit">
+        Add
+      </button>
     </form>
-  )
-}
+  );
+};
 
-export default InputField
+export default InputField;
